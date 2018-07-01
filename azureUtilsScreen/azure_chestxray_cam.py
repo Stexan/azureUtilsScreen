@@ -52,9 +52,9 @@ def process_cam_image(crt_cam_image, originalImage, crt_alpha = .6):
     crt_cam_image /= np.max(crt_cam_image)
     crt_cam_image = cv2.resize(crt_cam_image, (im_width, im_height))
 
-    heatmap = cv2.applyColorMap(np.uint8(255*crt_cam_image), cv2.COLORMAP_JET)
+    crt_cam_image[np.where(crt_cam_image < 0.1)] = 0
 
-    heatmap[np.where(crt_cam_image < 0.2)] = 0
+    heatmap = cv2.applyColorMap(np.uint8(255*crt_cam_image), cv2.COLORMAP_JET)
 
     #heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
     
