@@ -101,18 +101,29 @@ def plot_cam_results(crt_blended_image, crt_cam_image, crt_xray_image, map_capti
     
 def normalize(crt_array):
     crt_array /= 255.
-
+    #mean and std are rgb
+    #crt_array is bgr
     mean = [0.485, 0.456, 0.406]
     std = [0.229, 0.224, 0.225]
-
-    crt_array[..., 0] -= mean[2]
-    crt_array[..., 1] -= mean[1]
-    crt_array[..., 2] -= mean[0]
-
-    crt_array[..., 0] /= std[2]
-    crt_array[..., 1] /= std[1]
-    crt_array[..., 2] /= std[0]
-
+    
+    crt_array[..., 0] /= np.std(crt_array[..., 0])
+    crt_array[..., 0] *= std[2]
+    
+    crt_array[..., 0] -= np.mean(crt_array[..., 0])
+    crt_array[..., 0] += mean[2]
+    
+    crt_array[..., 1] /= np.std(crt_array[..., 1])
+    crt_array[..., 1] *= std[1]
+    
+    crt_array[..., 1] -= np.mean(crt_array[..., 1])
+    crt_array[..., 1] += mean[1]
+    
+    crt_array[..., 2] /= np.std(crt_array[..., 2])
+    crt_array[..., 2] *= std[0]
+    
+    crt_array[..., 2] -= np.mean(crt_array[..., 2])
+    crt_array[..., 2] += mean[0]
+    
     return crt_array
     
 def process_xray_image(crt_xray_image, DenseNetImageNet121_model, originalImage):
